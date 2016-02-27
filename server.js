@@ -11,7 +11,9 @@ app.use(locale(['en', 'en_US']));
 
 app.get('/api/whoami/', (req, res) => {
 	let ip6 = new ipaddr.Address6(req.ip);
-	let ip = ip6.to4().address;
+	let ip4 = ip6.to4().address;
+	let ip = req.headers['x-forwarded-for'] || ip6.address;
+	console.log(ip);
 	let language = req.locale;
 	let ua = uaParser(req.headers['user-agent']);
 	let software = `${ua.os.name} ${ua.os.version}; ${ua.cpu.architecture}`;
